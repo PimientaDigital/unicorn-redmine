@@ -30,6 +30,7 @@ Vagrant.configure("2") do |config|
             guest_config.hostmanager.aliases = %w(local.redmine.com)
 
             guest_config.vm.synced_folder "./","/var/www", {:mount_options => ['dmode=777','fmode=777']}
+            guest_config.vm.synced_folder "./provision","/var/provision", {:mount_options => ['dmode=777','fmode=777']}
 
     guest_config.vm.provider :virtualbox do |v|
                 v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
@@ -42,7 +43,7 @@ Vagrant.configure("2") do |config|
 
             guest_config.vm.provision :puppet do |puppet|
                 puppet.manifests_path = "provision/puppet/manifests"
-                puppet.manifest_file  = "main.pp"
+                puppet.manifest_file  = "develop.pp"
                 puppet.module_path = ["provision/puppet/modules","provision/puppet/modules_contrib"]
                 puppet.options = "--verbose --debug"
             end
